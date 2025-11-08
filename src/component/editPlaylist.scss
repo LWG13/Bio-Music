@@ -1,0 +1,140 @@
+.createProduct .productBox {
+  height: 100%;
+  
+}
+.productBox .productInfo{
+  display: flex;
+  flex-direction: column;
+ 
+  align-items: center;
+  height: 100%;
+  padding: 15px;
+  border-radius: 5px;
+}
+.createProduct .productInfo .productImg {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+input[type=file] {
+  color: white;
+  height: 20px;
+}
+
+.createProduct .productInfo .productImg .custom-file-upload {
+  display: inline-block;
+
+  cursor: pointer;
+  background: white;
+  color: white;
+  width: 100px;
+
+  text-align: center;
+  border-radius: 5px;
+}
+  .file-upload {
+      text-align: center;
+      border: 1px solid white;
+    border-radius: 5px;
+    margin-top: 20px;
+      padding-right: 50px;
+      padding-left: 50px;
+      position: relative;
+      cursor: pointer;
+    }
+    .file-upload p {
+      font-size: 0.87rem;
+      margin-top: 10px;
+      color: #bbcada;
+    }
+
+.file-upload input {
+  display: block;
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      opacity: 0;
+      cursor: pointer;
+}
+
+.createProduct .productInfo input{
+
+  border: 1px solid white;
+  width: 100%;
+  height: 50px;
+  padding-left: 5px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+
+.createProduct .productInfo textarea {
+  width: 100%;
+  border: 1px solid white;
+  height: 200px;
+  padding: 5px;
+  font-size: 15px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+.createProduct .productInfo .createCategory {
+
+  border-radius: 5px;
+  height:30px;
+  margin-bottom: 20px;
+  padding: 10px;
+  width: 98%;
+}
+.createProduct .productInfo .btn-submit {
+  width: 100%;
+  height: 60px;
+  border: none;
+  background: #32CD32;
+  color: white;
+  border-radius: 5px;
+  transition: 0.2s;
+}
+.createProduct .productInfo .btn-submit:hover {
+  background: #212122;
+  border: 1px solid #32CD32;
+}
+.createProduct .productInfo img {
+  margin-top: 0px;
+  border-radius: 5px;
+  background-image: cover;
+  width: 250px;
+  height: 250px;
+}
+label{
+  color: white;
+  margin: 10px;
+  font-size: 23px;
+
+  font-weight: 500;
+}
+.profileInfo1 .buttonBox {
+  display: flex;
+  flex-wrap: wrap;
+}
+.productInfo .buttonBox button {
+  outline: none;
+  border: none;
+  background: #32CD32;
+  color: white;
+  width: 90px;
+  margin: 5px;
+  height: 40px;
+  border-radius: 5px;
+  text-align: center;
+}
+.productInfo .buttonBox button a {
+  text-decoration: none;
+  color: white;
+}
+.select{
+  border: 1px solid white;
+  color: white;
+}

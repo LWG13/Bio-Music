@@ -1,0 +1,141 @@
+@font-face {
+  font-family: Inter;
+  src: url("./interBold.ttf");
+  font-weight: 600;
+}
+@font-face {
+  font-family: Inter;
+  src: url("./inter.ttf");
+  font-weight: 200;
+}
+.grid{
+  width: 100%;
+  display: flex;
+  height: 80px;
+  
+
+  background: #1B1B1B;
+  top:0;
+  right: 0;
+  left: 0;
+  position: fixed;
+  z-index: 10000;
+  justify-content: center;
+  align-items: center;
+}
+.buttonSearch {
+  height: 35px;
+  background: black;
+  outline: none;
+  border: none;
+
+  border-left: 1px solid white;
+}
+.nofication {
+  width: 40px;
+  height: 40px;
+  margin-left: 15px;
+  margin-top: 15px;
+}
+.content {
+  width: 100%;
+  align-items: center;
+  margin-top: 90px;
+  height: calc(100vh - 80px);
+  justify-content: center;
+  font-family: Inter !important;
+}
+.search1{
+    display:flex;
+    align-items: center;
+    background-color: black;
+   height: 35px;
+  margin-top: 10px;
+   padding: 10px 10px;
+    border-radius: 20px;
+  
+    width: 49%;
+  margin-left: 15px;
+}
+.search1 img {
+  width: 30px;
+
+
+}
+.search1 input{
+    background: black;
+    padding: 3px;
+    border: 0;
+    outline: 0;
+    color: white;
+    width: 100%;
+    font-size: 18px;
+    height: 35px;
+}
+.navigation {
+  
+  height: 80px;
+  width: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  font-family: Inter;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  background: #1B1B1B;
+}
+.navMobile {
+  position: fixed;
+  height: 67px;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  right: 0;
+  background: #1B1B1B;
+  color: white;
+  font-family: Inter;
+  z-index: 1000;
+}
+.navMobileBox {
+  width: 25%;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  text-decoration: none;
+  color: white;
+}
+.navMobileBox p {
+  font-size: 13px;
+  font-weight: 500;
+}
+.navMobileBox img {
+  width: 25px;
+  height: 25px;
+  margin: auto;
+}
+  @media only screen and (min-width: 1250px) {
+  .navigation{
+    width: 1250px;
+  }
+  .content{
+   width: 1250px;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .userNav{
+    display: none;
+  }
+  .homeIcon {
+    display: none;
+  }
+}
+@media only screen and (min-width: 600px) {
+  .nofication {
+  margin-left: 15%;
+  }
+  .navMobile {
+    display: none;
+  }
+}

@@ -1,0 +1,78 @@
+
+.upperSide {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 2px solid black;
+}
+
+.playlist {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  height: 100vh;
+}
+.playlistBox {
+  display: flex;
+ color: white;
+  padding-top: 12px;
+  text-decoration: none;
+}
+.playlistBox img {
+  width: 55px;
+  height: 55px;
+  border-radius: 10px;
+}
+.playlist .playlistBox .playlistContent .span1 {
+   margin-bottom: 5px;
+  font-size: 20px;
+  font-weight: 600;
+  overflow: hidden;
+         white-space: nowrap; 
+  text-overflow: ellipsis;
+         width: 100%;
+
+ }
+.playlistContent .span2 {
+  
+}
+.playlist .playlistBox .playlistContent {
+  display: flex;
+  margin-left: 12px;
+  flex-direction: column;
+}
+.search1{
+    display:flex;
+
+    background-color: black;
+   height: 35px;
+  margin-top: 10px;
+   padding: 10px 10px;
+    border-radius: 20px;
+
+    width: 90%;
+  margin-left: 15px;
+}
+
+.search1 img {
+  width: 30px;
+
+
+}
+.search1 input{
+    background: black;
+    padding: 3px;
+    border: 0;
+    outline: 0;
+    color: white;
+    
+    font-size: 18px;
+    height: 35px;
+}
+  .buttonSearch {
+  height: 30px;
+  background: black;
+  outline: none;
+  border: none;
+    border-left: 1px solid white;
+}
+
