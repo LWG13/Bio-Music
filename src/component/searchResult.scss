@@ -1,0 +1,29 @@
+.playlistBox {
+  display: flex;
+ color: white;
+  padding-top: 12px;
+  text-decoration: none;
+}
+.playlistBox img {
+  width: 55px;
+  height: 55px;
+  border-radius: 10px;
+}
+.playlistBox .playlistContent .span1 {
+   margin-bottom: 5px;
+  font-size: 20px;
+  font-weight: 600;
+  overflow: hidden;
+         white-space: nowrap; 
+  text-overflow: ellipsis;
+         width: 100%;
+
+ }
+.playlistContent .span2 {
+ margin-top: 10px;
+}
+.playlistBox .playlistContent {
+  display: flex;
+  margin-left: 12px;
+  flex-direction: column;
+}

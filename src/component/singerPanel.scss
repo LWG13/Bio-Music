@@ -1,0 +1,131 @@
+  .singerPanel {
+    padding-top: 50px;
+    display: flex;
+    flex-direction: column;
+
+
+    .userDetail {
+    display: flex;
+    padding: 15px;
+    color: white;
+    text-decoration: none;
+  }
+    .userDetail img {
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+  }
+   .userDetail .userInfo {
+    padding-left: 25px;
+    color: white;
+  }
+    .userDetail1 {
+      display: flex;
+      padding: 15px;
+      color: white;
+      text-decoration: none;
+    }
+      .userDetail1 img {
+      width: 100px;
+      height: 100px;
+      border-radius: 10px;
+    }
+     .userDetail1 .userInfo1 {
+      padding-left: 25px;
+      color: white;
+       h2 {
+           overflow: hidden;
+           white-space: nowrap; 
+    text-overflow: ellipsis;
+           width: 100%;
+       }
+    }
+    playlistList1 {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+  .search1{
+      display:flex;
+
+      background-color: black;
+     height: 35px;
+    margin-top: 10px;
+     padding: 10px 10px;
+      border-radius: 20px;
+
+      width: 90%;
+    margin-left: 15px;
+  }
+  .search1 img {
+    width: 30px;
+
+
+  }
+  .search1 input{
+      background: black;
+      padding: 3px;
+      border: 0;
+      outline: 0;
+      color: white;
+
+      font-size: 18px;
+      height: 35px;
+  }
+    .buttonSearch {
+    height: 30px;
+    background: black;
+    outline: none;
+    border: none;
+      border-left: 1px solid white;
+  }
+   .isBoxType {
+     padding: 10px;
+     border: 1px solid white;
+     border-radius: 5px;
+     width: 60px;
+      display: flex;
+      text-align: center;
+     margin-left: 15px;
+   }
+   .boxType { 
+      padding: 10px;      border-radius: 5px;
+     background: white;
+     margin-left: 15px;
+     color: black;
+     width: 60px;
+     display: flex;
+     text-align: center;
+  }
+    .playlistBox {
+      display: flex;
+     color: white;
+      padding-top: 12px;
+      text-decoration: none;
+    }
+    .playlistBox img {
+      width: 75px;
+      height: 75px;
+      border-radius: 10px;
+    }
+    .playlistBox .playlistContent .span1 {
+       margin-bottom: 5px;
+      font-size: 20px;
+      font-weight: 600;
+      overflow: hidden;
+             white-space: nowrap; 
+      text-overflow: ellipsis;
+             width: 100%;
+
+     }
+    .playlistContent .span2 {
+     margin-top: 10px;
+    }
+    .playlistBox .playlistContent {
+      display: flex;
+      margin-left: 12px;
+      flex-direction: column;
+    }
+
+  }

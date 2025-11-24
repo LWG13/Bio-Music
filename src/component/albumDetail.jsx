@@ -1,38 +1,39 @@
 import React, { useEffect, useState, useRef} from "react";
 import { useParams, Link, useNavigate} from "react-router-dom";
 
-import "./playlistDetail.scss";
+import "./albumDetail.scss";
 import axios from "axios";
+import Footer from "./footer.jsx";
+
 import { useQuery, useInfiniteQuery } from "react-query";
-import { addMusicToPlaylist, removeMusicToPlaylist, deletePlaylist} from "./ReduxToolkit/authSlice.js"
 import add1 from "./BioMusicImage/add.png";
-import { setPlaylist } from "./ReduxToolkit/musicSlice.js"
+
 import { useInView } from "react-intersection-observer";
 import search1 from "./BioMusicImage/search.png"
 import { MdCancel } from "react-icons/md";
+import { setPlaylist} from "./ReduxToolkit/musicSlice.js"
+import { addMusicToAlbum, removeMusicToAlbum } from "./ReduxToolkit/authSlice.js"
 
 import { CiCircleMore } from "react-icons/ci";
 import { useSelector, useDispatch } from "react-redux";
-import Footer from "./footer.jsx";
-import { flushSync } from "react-dom"
-export default function PlaylistDetail() {
+
+export default function AlbumDetail() {
   const id = useParams();
   const { data } = useQuery({
     queryKey: ["us", id.id],
     queryFn: () =>
       axios.get(
-        `${import.meta.env.VITE_BACKEND}music/playlist/detail/${id.id}`,
+        `${import.meta.env.VITE_BACKEND}music/album/detail/${id.id}`,
       ),
   });
   console.log(data)
-  const settingRef = useRef()
    const [musicSearch, setMusicSearch] = useState("");
 
   const { data: addMusicList } = useQuery({
     queryKey: ["add", musicSearch],
     queryFn: () => {
       return axios.get(
-        `${import.meta.env.VITE_BACKEND}music/playlistAddMusic`, {
+        `${import.meta.env.VITE_BACKEND}music/albumAddMusic/${auth.id}`, {
           params: { search: musicSearch}
         }
       )}
@@ -54,10 +55,10 @@ const navigate= useNavigate()
     isFetchingNextPage,
     status,
   } = useInfiniteQuery({
-    queryKey: ["playlisttt", id.id, querySearch],
+    queryKey: ["album", id.id, querySearch],
     queryFn:  async ({ pageParam = 0 }) => {
       const res = await axios.get(
-  `${import.meta.env.VITE_BACKEND}music/playlist/musics/${id.id}`,
+  `${import.meta.env.VITE_BACKEND}music/album/musics/${id.id}`,
   {
     params: { page: pageParam, limit: 10, search },
   }
@@ -71,7 +72,7 @@ return res.data
   );
   if (loadedCount >= lastPage.total) return undefined;
   return allPages.length;
-},})
+},refetchInterval: 4000})
 
   React.useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
@@ -79,37 +80,28 @@ return res.data
     }
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
   const handleAdd = (musicId) => {
-    dispatch(addMusicToPlaylist({playlistId: id.id, musicId: musicId}))
+    dispatch(addMusicToAlbum({albumId: id.id, musicId: musicId}))
     refetch()
     
-  }
+  } 
   const [setting, setSetting] = useState(false)
-    useEffect(() => {
-   let handler = (e) => {
-     if(settingRef.current && !settingRef.current.contains(e.target)){
-       setSetting(false)
-     }
-   }
-   document.addEventListener("mousedown", handler)
-   return () => document.removeEventListener("mousedown",handler)
-  }, [])
-  
-
+   
   return (
     <div className="profile">
       <div className="userDetail">
         <img src={data?.data?.image} alt="" width="100px" />
         <div className="userInfo">
-          <p style={{ fontSize: "20px" }}>Danh sách phát</p>
+          <p style={{ fontSize: "20px" }}>Album</p>
           <h2 style={{ color: "white", marginRight: "10px" }}>
+            
             {data?.data?.title}
           </h2>
+          <p onClick={() => navigate(`/user/${data?.data?.singerId?._id}`)} style={{ fontSize: "20px" }}>{data?.data?.singerId?.username}</p>
         </div>
       </div>
-      {data?.data?.userId === auth.id ? (
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <CiCircleMore style={{ width: "40px", height: "40px" }} onClick={() => setSetting(true) } />
-                          {setting ? <Setting setting={settingRef} dispatch={dispatch} id={id.id} navigate={navigate} /> : null}
+      {data?.data?.singerId?._id === auth.id ? (
+        <div >
+         
           {add ? <MdCancel style={{width: "40px", height: "40px" }} onClick={() => setAdd(!add) }/> : <img src={add1} alt="add" width="40px" height="40px" onClick={() => setAdd(!add) }  /> }
         </div>
       ) : null}
@@ -118,13 +110,13 @@ return res.data
      {add ?
        (
          <>
-           <h1>Thêm bài hát</h1>
+           <h1>Thêm bài hát của bạn</h1>
            <div className="search1">
              <input type="text" placeholder="thêm bài hát.." onChange={e => setMusicSearch(e.target.value)} />
            </div>
            <div className="musicList">
              {addMusicList?.data?.map(music1 => (
-           <div  className="userDetail1">
+           <div  className="userDetail1" key={music1._id}>
              <img src={music1.image} alt="" width="70px" />
              <div className="userInfo1">
                <h2>{music1.title}</h2>
@@ -136,7 +128,11 @@ return res.data
                </p>
                <button className="removeButton" onClick={() => handleAdd(music1._id)}>Thêm nhạc</button>
              </div>
+               <br/>
+                <p style={{color: "red"}}>{auth.addAlbumError}</p>
              </div>
+             
+
            </div>
              ))}
            </div>
@@ -179,10 +175,10 @@ return res.data
                 
                   </div>
                 </div>
-                {data.data.userId === auth.id ?
-             <button style ={{ marginTop: "50px"}} onClick={() => dispatch(removeMusicToPlaylist({playlistId: id.id, musicId: musicc._id}))} className="removeButton">Xóa</button>
+                {data.data.singerId._id === auth.id ?
+             <button style ={{ marginTop: "50px"}} onClick={() => dispatch(removeMusicToAlbum({albumId: id.id, musicId: musicc._id}))} className="removeButton">Xóa</button>
                   : null}
-              </div>
+               </div>
               ))}
             </div>
           ))}
@@ -196,24 +192,4 @@ return res.data
       <Footer />
     </div>
   );
-}
-function Setting({setting, dispatch,id, navigate}) {
- const handleDel = async () => {
-  const res = await dispatch(deletePlaylist({_id: id}))
-   if(res.success === "success" ) navigate("/libary")
-}
-  return (
-
-         <div className={`dropdownmenu10`} ref={setting}>
-           <Link to={`/edit-playlist/${id}`} className="dropdownitem10" >
-              
-             <p  className="link10" >Chỉnh sửa</p>
-            </Link>
-            <div className="dropdownitem10" onClick={() => handleDel()}  >
-              <p  className="link10" >Xóa</p>
-            </div>
-
-         </div>
-
-  )
 }

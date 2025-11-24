@@ -8,6 +8,7 @@
 .playlist {
   display: flex;
   flex-direction: column;
+  padding-bottom: 130px;
   overflow-y: auto;
   height: 100vh;
 }

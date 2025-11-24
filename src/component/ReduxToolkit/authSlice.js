@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { auth, provider, signInWithPopup } from "../../../firebaseConfig";
+import { toast } from "react-toastify"
 axios.defaults.withCredentials = true; 
 
 export const googleUser = createAsyncThunk(
@@ -72,6 +73,35 @@ export const verifyUser = createAsyncThunk(
     }
   }
 );
+export const follow = createAsyncThunk(
+  "auth/fUser",
+  async (values, { rejectWithValue }) => {
+    try {
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND}user/follow`, {
+        userId: values.userId,
+        followId : values.followId
+      });
+      return res.data.user;
+    } catch (err) {
+      return rejectWithValue(null); 
+    }
+  }
+);
+export const likePost = createAsyncThunk(
+  "auth/lPost",
+  async (values, { rejectWithValue }) => {
+    try {
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND}music/like`, {
+        userId: values.userId,
+        likeId : values.likeId
+      });
+      return res.data.user;
+    } catch (err) {
+      return rejectWithValue(null); 
+    }
+  }
+);
+
 export const createPlaylist = createAsyncThunk(
   "auth/playlistUser",
   async (values, { rejectWithValue }) => {
@@ -84,6 +114,25 @@ export const createPlaylist = createAsyncThunk(
       return res.data.user;
     } catch (err) {
       return rejectWithValue(null); 
+    }
+  }
+);
+export const createMusicOrAlbum = createAsyncThunk(
+  "auth/cmoa",
+  async (values, { rejectWithValue }) => {
+    try {
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND}music/createMusicOrAlbum`, {
+        image: values.image,
+        singerId: values.singerId,
+        role: values.role,
+        title: values.title,
+        type: values.type,
+        category: values.category,
+        audio: values.audio
+      });
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data.message); 
     }
   }
 );
@@ -118,6 +167,22 @@ export const editPlaylist = createAsyncThunk(
   }
 );
 
+export const editUser = createAsyncThunk(
+  "auth/usM",
+  async (values, { rejectWithValue }) => {
+    try {
+      const res = await axios.put(`${import.meta.env.VITE_BACKEND}user/editUser`, {
+        _id: values._id,
+        username: values.username,
+        image: values.image,
+     });
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(null); 
+    }
+  }
+);
+
 export const removeMusicToPlaylist = createAsyncThunk(
   "auth/playlistR",
   async (values, { rejectWithValue }) => {
@@ -132,12 +197,68 @@ export const removeMusicToPlaylist = createAsyncThunk(
     }
   }
 );
+export const addMusicToAlbum = createAsyncThunk(
+  "auth/playlistMjbg",
+  async (values, { rejectWithValue }) => {
+    try {
+      const res = await axios.put(`${import.meta.env.VITE_BACKEND}music/add-music/album`, {
+        albumId: values.albumId,
+        musicId: values.musicId,
+      });
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data.message); 
+    }
+  }
+);
+export const removeMusicToAlbum = createAsyncThunk(
+  "auth/playlistAlb",
+  async (values, { rejectWithValue }) => {
+    try {
+      const res = await axios.put(`${import.meta.env.VITE_BACKEND}music/remove-music/album`, {
+        albumId: values.albumId,
+        musicId: values.musicId,
+      });
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(null); 
+    }
+  }
+);
+export const editPassword = createAsyncThunk(
+  "auth/pass",
+  async (values, { rejectWithValue }) => {
+    try {
+      const res = await axios.put(`${import.meta.env.VITE_BACKEND}user/editPassword`, {
+        _id: values._id,
+        passwordUser: values.passwordUser,
+        newPassword: values.newPassword
+      });
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.message); 
+    }
+  }
+);
 export const deletePlaylist = createAsyncThunk(
   "auth/playlistD",
   async (values, { rejectWithValue }) => {
     try {
       const res = await axios.delete(`${import.meta.env.VITE_BACKEND}music/delete-playlist`, {
   data: { _id: values._id },
+});
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(null); 
+    }
+  }
+);
+export const deleteMusicOrAlbum = createAsyncThunk(
+  "auth/ma",
+  async (values, { rejectWithValue }) => {
+    try {
+      const res = await axios.delete(`${import.meta.env.VITE_BACKEND}music/deleteAlbumOrMusic`, {
+  data: { _id: values._id, role: values.role,type:  values.type},
 });
       return res.data;
     } catch (err) {
@@ -159,18 +280,25 @@ const authSlice = createSlice({
     email: "",
     image: "",
     userAuth: false,
+    role: "",
     loading: false,
     registerError: null,
     editPlaylist: false,
     registerStatus: "",
+    addAlbumError: null,
     loginError: null,
+    editPassword: false,
+    createMusic: false,
+    editPasswordError: null,
     loginStatus: "",
   },
   reducers: {
         resetSuccess(state,action) {
       return {
         ...state,
-        editPlaylist: false
+        editPlaylist: false,
+        editPassword: false,
+        createMusic: false
       }
         }
   },
@@ -231,6 +359,7 @@ const authSlice = createSlice({
         state.email = action.payload.email
         state.image = action.payload.image
         state.userAuth = true
+        state.role = action.payload.role
       })
       .addCase(createPlaylist.fulfilled, (state) => {
       
@@ -245,11 +374,61 @@ const authSlice = createSlice({
       })
 
     .addCase(editPlaylist.fulfilled, (state) => {
-      state.editPlaylist = true
+    toast.success(`Edit Playlist successfully`, {
+          position: "top-right"
+     })
+   return {
+     ...state,
+     editPlaylist: true,
+    }
+    }) .addCase(editPassword.fulfilled, (state) => {
+ toast.success(`Edit password successfully`, {
+          position: "top-right"
+        })
+
+ return {
+   ...state,
+    editPassword : true
+    }
     })
-    
+.addCase(editPassword.rejected, (state, action) => {
+      state.editPasswordError = action.payload 
+    })
+     .addCase(createMusicOrAlbum.fulfilled, (state) => {
+        toast.success("Creating successfully", {
+          position: "top-right"
+        })
+       state.createMusic = true
+     })
+    .addCase(addMusicToAlbum.rejected, (state, action) => {
+        
+       state.addAlbumError = action.payload
+     })
      
-     
+      .addCase(addMusicToAlbum.fulfilled, (state, action) => {
+         toast.success("Add music to album successfully", {
+              position: "top-right"
+            })
+        return {
+          ...state
+        }
+         })
+    .addCase(removeMusicToAlbum.fulfilled, (state, action) => {
+       toast.success("remove music to album successfully", {
+            position: "top-right"
+          })
+      return {
+        ...state
+      }
+       })
+    .addCase(deleteMusicOrAlbum.fulfilled, (state, action) => {
+       toast.success("delete music or album successfully", {
+            position: "top-right"
+          })
+      return {
+        ...state
+      }
+       })
   },
 });
 export const {resetSuccess} = authSlice.actions

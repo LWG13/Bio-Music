@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useState} from "react"
 import { Link, useParams } from "react-router-dom"
 import { useQuery } from 'react-query'
 import { useDispatch, useSelector } from "react-redux"
@@ -10,19 +10,20 @@ import { useEffect } from "react"
 import { Grid } from "@mui/material"
 
 import { setCurrentSong, playSong, pauseSong, currentSong, isPlaying } from "./ReduxToolkit/musicSlice";
- 
+ import { likePost } from "./ReduxToolkit/authSlice.js"
 import "./musicDetail.scss"
 import Footer from "./footer";
 export default function MusicDetail() {
   const id = useParams()
-
+  const auth = useSelector(state => state.auth)
   const dispatch = useDispatch();
-
+ const [like, setlike] = useState(false)
 
   const { data } = useQuery({
    queryKey: ["musicdetail", id.id],
    queryFn: () => {
-     return axios.get(`${import.meta.env.VITE_BACKEND}music/detail/${id.id}`)}
+     return axios.get(`${import.meta.env.VITE_BACKEND}music/detail/${id.id}`)},
+    refetchInterval: 4000
   })
   const { data : singer} = useQuery({
    queryKey: ["singer"],
@@ -46,7 +47,12 @@ export default function MusicDetail() {
       dispatch(pauseSong());
     }
   };
+ const handleLike = async () => {
+  
+   dispatch(likePost({ userId: auth.id, likeId: id.id }));
 
+   
+  };
   return(
     <div className="musicDetail">
       <Grid container spacing={3}>
@@ -57,8 +63,9 @@ export default function MusicDetail() {
         <h1>{data?.data?.title}</h1>
           <div className="infoBox" >
           <div className="heart" >
-            <FaHeart style={{width: "50px", height: "50px"}} />
-            <p>10</p>
+            {data?.data?.like?.includes(auth.id) ?   <FaHeart style={{width: "50px", height: "50px", color: "red"}} onClick={() => handleLike()} /> :
+            <FaHeart style={{width: "50px", height: "50px"}} onClick={() => handleLike()}/> }
+            <p>{data?.data?.like?.length}</p>
           </div>
             <FaShareAlt style={{width: "50px", height: "50px"}}/>
           </div>
@@ -67,10 +74,10 @@ export default function MusicDetail() {
           <br/>
           <hr/>
             <h2>Ca sĩ</h2>
-        <Link to={`/profile/${data?.data.singerId}`} className="userDetail">
-         <img src={data?.data.singerImage} alt="" width="100px"/>
+        <Link to={`/user/${data?.data?.singerId._id}`} className="userDetail">
+         <img src={data?.data.singerId.image} alt="" width="100px"/>
          <div className="userInfo">
-          <p style={{fontSize: "23px"}}>{data?.data.singerName}</p>
+          <p style={{fontSize: "23px"}}>{data?.data.singerId.username}</p>
           <span style={{color: "#d4d4d4", marginRight: "10px"}}>Bấm để xem trang của ca sĩ</span>
          </div>
         </Link>
@@ -95,7 +102,7 @@ export default function MusicDetail() {
               <img src={data.image} alt="" width="100px"/>
               <div className="userInfo">
                <p style={{fontSize: "23px"}}>{data?.title}</p>
-               <span style={{color: "#d4d4d4", marginRight: "10px"}}>{data?.singerName}</span>
+               <span style={{color: "#d4d4d4", marginRight: "10px"}}>{data?.singerId.username}</span>
               </div>
              </Link>   
                  ))}

@@ -37,6 +37,14 @@
   margin-left: 15px;
   margin-top: 15px;
 }
+
+.nofication1 {
+  width: 40px;
+  height: 40px;
+  margin-left: 15px;
+  margin-top: 15px;
+}
+
 .content {
   width: 100%;
   align-items: center;
@@ -74,20 +82,20 @@
 }
 .navigation {
   
-  height: 80px;
+  height: 70px;
   width: 100%;
   top: 0;
   left: 0;
   right: 0;
   font-family: Inter;
-  z-index: 1000;
+  z-index: 5;
   display: flex;
   justify-content: space-between;
   background: #1B1B1B;
 }
 .navMobile {
   position: fixed;
-  height: 67px;
+  height: 60px;
   bottom: 0;
   left: 0;
   display: flex;
@@ -107,12 +115,12 @@
   color: white;
 }
 .navMobileBox p {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
 }
 .navMobileBox img {
-  width: 25px;
-  height: 25px;
+  width: 20px;
+  height: 20px;
   margin: auto;
 }
   @media only screen and (min-width: 1250px) {
@@ -127,6 +135,10 @@
   .userNav{
     display: none;
   }
+  .nofication1 {
+    display: none;
+  }
+
   .homeIcon {
     display: none;
   }

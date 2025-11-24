@@ -4,6 +4,7 @@
 
 
 
+  padding-bottom: 100px;
   .userDetail {
   display: flex;
   padding: 15px;
@@ -73,4 +74,137 @@
 
  
 }
+.dropdownmenu10{
+  position: absolute;
+  top: 295px;
+  left: 70px;
+  border: 1px solid white;
+  background-color: black;
+  color: white;
+  width: 170px;
+  padding: 10px;
+  border-radius: 15px;
+  z-index: 10;
+}
+.dropdownmenu10::before{
+  content: "";
+  position: absolute;
+  top: -5px;
+  right: 20px;
+  height: 20px;
+  width: 20px;
+  transform: rotate(45deg);
+}
+.dropdownmenu10.active10 {
+  visibility: visible;
+  opacity: 1;
+  transition: 0.5s;
+  transform: translateY(0);
+}
+.dropdownmenu10.deactive10{
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.5s;
+  transform: translateY(-20px);
+}
+.dropdownmenu10 ul li{
+  padding: 0;
+  border-top: 1px solid rgba(0,0,0,0.5);
+}
+.dropdownmenu10 ul li:hover{
+  cursor: pointer;
+  color: purple;
+}
+.dropdownmenu10 ul li:hover img{
+  opacity: 1;
+  cursor: pointer;
+}
+.menu-item10 {
+  flex-direction: column;
+}
+.dropdownitem10{
+  display: flex;
+  margin: 5px auto;
+  border-radius: 10px;
 
+  font-weight: 400;
+  text-decoration: none;
+  z-index: 1000000000;
+}
+.dropdownitem10:hover {
+  transform: scale(1.05);
+  transition: 0.3s;
+  background: blue;
+}
+
+.dropdownmenu10 .dropdownitem10 img {
+  width: 40px;
+  height: 40px;
+  margin-top: 12px;
+  margin-right: 5px;
+  obacity: 0.5;
+  transition: 0.5s;
+}
+.dropdownitem10 .link10{
+  font-size: 20px;
+  margin-left: 10px;
+  transition: 0.5s;
+  text-decoration: none;
+  color: white;
+
+}
+.notFollow {
+  outline: none;
+  border: none;
+  width: 120px;
+  height: 50px;
+  color: white;
+  background: #32CD32;
+
+  border-radius: 10px;
+}
+.follow {
+  outline: none; 
+  border: 1px solid #32CD32;
+  width: 120px;
+  height: 50px;
+  color: white;
+  background: #212122;
+  border-radius: 10px;
+}
+.upload-container {
+  display: flex;
+  flex-direction: column;
+}
+  .upload-btn {
+    width: 50px;
+    height: 50px;
+    background-image: url("./image.png"); // Đường dẫn ảnh làm nút
+    background-size: cover;
+    background-position: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+
+
+  }
+
+  input[type="file"] {
+   display: none;
+  }
+.save {
+  outline: none;
+  border: none;
+  background: #32CD32;
+  color: white;
+  border-radius: 10px;
+  width: 100px;
+  height: 50px;
+}
+.editInput {
+  width: 100%;
+  border: 1px solid white;
+  color: white;
+  height: 50px;
+  border-radius: 10px;
+  background: #212122;
+}

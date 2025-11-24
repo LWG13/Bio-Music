@@ -107,7 +107,8 @@ export default function EditPlaylist() {
                         value={public1}
                         label="Set Public/Private"
                         border="white"
-                        className="select"
+                  
+                        sx={{ color: "white", border: "1px solid white"}}
                         color="white"
                         onChange={(e) => setPublic(e.target.value)} defaultValue={public1}
                         required

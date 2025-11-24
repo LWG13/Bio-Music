@@ -1,28 +1,32 @@
 import React, { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { FaPlay, FaPause, FaStepForward, FaStepBackward } from "react-icons/fa";
+import {
+  togglePlay,
+  pauseSong,
+  playNext,
+  playPrev,
+} from "./ReduxToolkit/musicSlice";
 import "./playbar.scss";
-import { togglePlay } from "./ReduxToolkit/musicSlice";
 
 const PlayerBar = () => {
   const dispatch = useDispatch();
   const { currentSong, isPlaying } = useSelector((state) => state.music);
-const audioRef = useRef(null);
+  const audioRef = useRef(null);
+
   useEffect(() => {
     if (!audioRef.current) return;
-
     if (isPlaying) {
       audioRef.current.play().catch((err) => console.log("Play error:", err));
     } else {
       audioRef.current.pause();
     }
-  }, [isPlaying]);
+  }, [isPlaying, currentSong]);
 
-  // 🔹 Khi nhạc kết thúc tự dừng
   const handleEnded = () => {
-    dispatch(pauseSong());
+    dispatch(playNext());
   };
-  
+
   return (
     <div className="player-bar">
       <div className="player-left">
@@ -34,19 +38,26 @@ const audioRef = useRef(null);
       </div>
 
       <div className="player-center">
-        <button><FaStepBackward /></button>
+        <button onClick={() => dispatch(playPrev())}>
+          <FaStepBackward />
+        </button>
         <button onClick={() => dispatch(togglePlay())}>
           {isPlaying ? <FaPause /> : <FaPlay />}
         </button>
-        <button><FaStepForward /></button>
+        <button onClick={() => dispatch(playNext())}>
+          <FaStepForward />
+        </button>
       </div>
 
       <div className="player-right">
         <audio
           ref={audioRef}
-          src={`${import.meta.env.VITE_BACKEND}music/play/${currentSong?._id}`}
+          src={
+            currentSong
+              ? `${import.meta.env.VITE_BACKEND}music/play/${currentSong._id}`
+              : ""
+          }
           onEnded={handleEnded}
-          controls
         />
       </div>
     </div>
