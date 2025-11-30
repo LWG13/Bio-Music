@@ -13,6 +13,7 @@ import { FaEdit } from "react-icons/fa";
 export default function SingerPanel() {
 const { ref, inView } = useInView();
  const auth =useSelector(state => state.auth)
+  const dispatch = useDispatch()
   const navigate= useNavigate()
   const [searchData, setSearchData] = useState("")
   const [type, setType] = useState("music")
@@ -32,6 +33,7 @@ const { ref, inView } = useInView();
     if (loadedCount >= lastPage.total) return undefined;
     return allPages.length;
       },
+    refetchInterval: 3000
   
   });
   React.useEffect(() => {
@@ -61,8 +63,10 @@ const { ref, inView } = useInView();
 
 <div style={{display: "flex"}} >               
   <span className="span2">{type === "music" ? "Nhạc" : "Album" }</span>
+   <Link to={`/edit/${j._id}/${j.type}`}>
                   <FaEdit style={{width: "40px", height: "40px", marginLeft: "10px", color: "#32CD32"}}/>
-                  <MdDelete style={{width:"40px", height: "40px", color: "red"}} onClick={() => dispatch(deleteMusicOrAlbum({role: auth.role, _id: j._id, type: j.type}))}/>
+   </Link>             
+     <MdDelete style={{width:"40px", height: "40px", color: "red"}} onClick={() => dispatch(deleteMusicOrAlbum({role: auth.role, _id: j._id, type: j.type}))}/>
 </div>
 </div>
             

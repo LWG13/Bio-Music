@@ -117,6 +117,18 @@ export const createPlaylist = createAsyncThunk(
     }
   }
 );
+export const emailAuth = createAsyncThunk("auth/email", async (values, {rejectWithValue}) => {
+   try{
+      const data = await axios.post(`${import.meta.env.VITE_BACKEND}user/send-otp`, {
+       email: values.email,
+
+     })
+    return data.data
+   }catch(err){
+     console.log(err.response.data)
+     return  rejectWithValue(err.response.data.message)
+   }
+})
 export const createMusicOrAlbum = createAsyncThunk(
   "auth/cmoa",
   async (values, { rejectWithValue }) => {
@@ -159,6 +171,38 @@ export const editPlaylist = createAsyncThunk(
         title: values.title,
         image: values.image,
         isPublic: values.isPublic
+      });
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(null); 
+    }
+  }
+);
+export const isSeen = createAsyncThunk(
+  "auth/psM",
+  async (values, { rejectWithValue }) => {
+    try {
+      const res = await axios.put(`${import.meta.env.VITE_BACKEND}music/isSeen`, {
+        _id: values._id,
+        
+      });
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(null); 
+    }
+  }
+);
+export const editMusicOrAlbum = createAsyncThunk(
+  "auth/plstM",
+  async (values, { rejectWithValue }) => {
+    try {
+      const res = await axios.put(`${import.meta.env.VITE_BACKEND}music/editMusicOrAlbum`, {
+        _id: values._id,
+        title: values.title,
+        image: values.image,
+        category: values.category,
+        role: values.role,
+        type: values.type
       });
       return res.data;
     } catch (err) {
@@ -266,6 +310,19 @@ export const deleteMusicOrAlbum = createAsyncThunk(
     }
   }
 );
+export const deleteMusicOrAlbumOrUser = createAsyncThunk(
+  "auth/mau",
+  async (values, { rejectWithValue }) => {
+    try {
+      const res = await axios.delete(`${import.meta.env.VITE_BACKEND}music/deleteAlbumOrMusicOrUser`, {
+  data: { _id: values._id, role: values.role,type:  values.type},
+});
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(null); 
+    }
+  }
+);
 
 export const logOutUser = createAsyncThunk("auth/logoutUser", async () => {
   await axios.post(`${import.meta.env.VITE_BACKEND}user/logout`);
@@ -277,6 +334,8 @@ const authSlice = createSlice({
   initialState: {
     id: "",
     username: "",
+    editMusicOrAlbum: false,
+    edit: null,
     email: "",
     image: "",
     userAuth: false,
@@ -288,7 +347,12 @@ const authSlice = createSlice({
     addAlbumError: null,
     loginError: null,
     editPassword: false,
+    emailPassword: "",
+    firstAuth: false,
+    secondAuth: false,
+    thirdAuth: false,
     createMusic: false,
+    error: null,
     editPasswordError: null,
     loginStatus: "",
   },
@@ -298,7 +362,8 @@ const authSlice = createSlice({
         ...state,
         editPlaylist: false,
         editPassword: false,
-        createMusic: false
+        createMusic: false,
+        editMusicOrAlbum: false
       }
         }
   },
@@ -329,6 +394,13 @@ const authSlice = createSlice({
         state.loginStatus = "pending";
         state.error = null;
       })
+      .addCase(emailAuth.fulfilled, (state, action) => {
+        state.emailPassword = action.payload
+      })
+      .addCase(emailAuth.rejected, (state, action) => {
+        state.error = action.payload
+      })
+
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
      state.userAuth = true
@@ -410,7 +482,8 @@ const authSlice = createSlice({
               position: "top-right"
             })
         return {
-          ...state
+          ...state,
+          edit: "0"
         }
          })
     .addCase(removeMusicToAlbum.fulfilled, (state, action) => {
@@ -418,7 +491,8 @@ const authSlice = createSlice({
             position: "top-right"
           })
       return {
-        ...state
+        ...state,
+        edit: "0"
       }
        })
     .addCase(deleteMusicOrAlbum.fulfilled, (state, action) => {
@@ -426,7 +500,17 @@ const authSlice = createSlice({
             position: "top-right"
           })
       return {
-        ...state
+        ...state,
+        edit: "0"
+      }
+       })
+    .addCase(editMusicOrAlbum.fulfilled, (state, action) => {
+       toast.success("edit music or album successfully", {
+            position: "top-right"
+          })
+      return {
+        ...state,
+        editMusicOrAlbum: true
       }
        })
   },

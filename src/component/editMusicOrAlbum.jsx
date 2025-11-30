@@ -6,18 +6,24 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import { createMusicOrAlbum } from "./ReduxToolkit/authSlice.js"
+import { editMusicOrAlbum } from "./ReduxToolkit/authSlice.js"
 import { useQuery } from "react-query"
 import axios from "axios"
 import { useForm, Form } from "react-hook-form";
 import { IoArrowBackSharp } from "react-icons/io5"
 
-export default function CreateMusic() {
-  const id = useParams()
-  const [image, setImage] = useState("https://s.widget-club.com/samples/aIdkSyXiunfsNZUT4p0Dp3M3lEF2/FI3N4EInBcr4RsBGKImj/F78AF6FB-AF40-4187-86BA-7316F0544BCE.jpg?q=70")
+export default function EditMusicOrAlbum() {
+  const {typed, id } = useParams()
+  const { data } = useQuery({
+    queryKey: ["singer", id],
+    queryFn: () => axios.get(`${import.meta.env.VITE_BACKEND}music/musicAndAlbum`, {
+      params: { _id: id, type: typed}
+    })
+  })
+  const [image, setImage] = useState(data?.data?.image)
   const navigate= useNavigate()
   const auth = useSelector(state => state.auth)
-  const [title, setTitle] = useState("")
+  const [title, setTitle] = useState(data?.data?.title)
   
   const {
     register,
@@ -25,9 +31,6 @@ export default function CreateMusic() {
     formState: { errors, isSubmitting, isDirty },
   } = useForm();
   const dispatch = useDispatch()
- useEffect(() => {
-  if(auth.role !== "singer") navigate("/")
- })
   const handleChange = (e) => {
     const file = e.target.files[0];
     previewFile(file);
@@ -40,38 +43,23 @@ export default function CreateMusic() {
       console.log(image);
     };
   };
-  const [audioFile, setAudioFile] = useState(null)
-  const [audioPreviewUrl, setAudioPreviewUrl] = useState("")
-  const [type, setType] = useState("music")
-  const [category, setCategory] = useState("anime")
-  const handleChangeAudio = (e) => {
-  const file = e.target.files[0];
-
-  // Preview
-  const url = URL.createObjectURL(file);
-  setAudioPreviewUrl(url);
-
-  const reader = new FileReader();
-  reader.readAsDataURL(file);
-  reader.onloadend = () => {
-    setAudioFile(reader.result); 
-  };
-};
+  const [type, setType] = useState(data?.data?.type)
+  const [category, setCategory] = useState(data?.data?.category)
   const handleSubmit = () => {
-    dispatch(createMusicOrAlbum({role: auth.role, singerId: auth.id, title: title, image: image, category: category, type: type, audio: audioFile}))
+    dispatch(editMusicOrAlbum({_id: data?.data?._id, role: auth.role, title: title, image: image, category: category, type: type}))
   }
   useEffect(() => {
-   if(auth.createMusic === true) navigate("/")
+   if(auth.editMusicOrAlbum === true) navigate("/singerPanel")
     
-  },[auth.createMusic, navigate])
+  },[auth.editMusicOrAlbum, navigate])
   return (
     <div className="createMusic" >
-      <Link to="/" >
+      <Link to="/singerPanel" >
       <IoArrowBackSharp style={{ width: "40px", height: "40px", color: "white"}}/>
       </Link>
-      <h1>Tạo Nhạc & Album</h1>
+      <h1>Chỉnh sửa Nhạc & Album</h1>
       <br/>
-      <img src={image} alt="image" />
+      <img src={image ? image : data?.data?.image} alt="image" />
           <div className="file-upload">
               <h3>Bấm vào đây để đăng ảnh</h3>
 
@@ -88,7 +76,7 @@ export default function CreateMusic() {
              <br/><br/>
                 <input
                       type="text"
-                    placeholder="Ghi tiêu đề..."    
+                    placeholder="Ghi tiêu đề..." value={data?.data?.title}   
                   {...register("title", {
                         required: {
                           value: true,
@@ -106,45 +94,20 @@ export default function CreateMusic() {
                     />
 
                     <p className="error">{errors.title?.message}</p>
-
-              <label>Chọn dạng sản phẩm</label><br/><br/>
-                <div style={{display: "flex", flexDirection:"column", textAlign: "center"}}>
-                      <Select
-                        labelId="demo-select-small-label"
-                        id="demo-select-small"
-                        value={type}
-                        
-                        border="white"
-                        className="select"
-                          sx={{ color: "white", border: "1px solid white", textAlign: "center"}}
-                      
-                        color="white"
-                        onChange={(e) => setType(e.target.value)} defaultValue={type}
-                        required
-                      >
-                        <MenuItem value="" disabled>
-                          <em>Chọn loại sản phẩm</em>
-                        </MenuItem>
-                        <MenuItem value="music">Nhạc</MenuItem>
-                        <MenuItem value="album">
-                         Album
-                        </MenuItem>
-                                              </Select>
-                    </div>
              <br/><br/>
-             {type === "music" ? (
+             {data?.data?.type === "music" ? (
                   <div >
                     <label>Chọn Loại nhạc</label><br/><br/>
                     <div style={{display: "flex", flexDirection:"column", textAlign: "center"}}>
                       <Select
                         labelId="demo-select-small-label"
                         id="demo-select-small"
-                      value={category}
+                      value={data?.data?.category}
                         label="Chọn loại nhạc"
                         border="white"
                         className="select"
                           sx={{ color: "white", border: "1px solid white", textAlign: "center"}}
-                      
+
                         color="white"
                         onChange={(e) => setCategory(e.target.value)} defaultValue={
                           category
@@ -156,45 +119,22 @@ export default function CreateMusic() {
                         </MenuItem>
                         <MenuItem value="anime">Anime</MenuItem>
                         <MenuItem value="phonk">
-                          Phonk
+                          Phonk/Funk
                         </MenuItem>
-                        <MenuItem value="pop">
-                          Nhạc Pop
+                        <MenuItem value="rock">
+                          Nhạc Rock
                         </MenuItem>
-                        <MenuItem value="giaitri">
-                          Giải trí
-                        </MenuItem>
-     <MenuItem value="hiphop">
-                          Hiphop
-                        </MenuItem>         
                       </Select>
                     </div>
                     <br/><br/>
-              <label>Chọn File nhạc</label>
-                     <div className="file-upload">
-              <h3>Bấm vào đây để đăng nhạc</h3>
-
-            <input type="file" accept="audio/*"  {...register("audio", {
-                        required: {
-                          value: true,
-                          message: "audio is required",
-                        },
-                  })}onChange={(e) => handleChangeAudio(e)} />
-            </div>
-<p className="error">{errors.audio?.message}</p>
-            {audioPreviewUrl && (
-              <div className="audio-preview">
-                <p>Preview bài nhạc:</p>
-                <audio controls src={audioPreviewUrl} />
-                  </div>
-                  )}
+                  
                   </div>
                   ) : null}
-             
-             
+
+
             <br/><br/>
-             <button className="btn-submit" >Tạo</button>
+             <button className="btn-submit" >Lưu</button>
            </Form>
     </div>
   )
-}
+  }

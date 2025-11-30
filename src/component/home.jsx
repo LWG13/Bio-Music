@@ -37,6 +37,7 @@ export default function Home() {
   if (loadedCount >= lastPage.total) return undefined;
   return allPages.length;
   },
+    refetchInterval: 4000
 });
   React.useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {

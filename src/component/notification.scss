@@ -1,0 +1,45 @@
+.notification {
+ display: flex;
+  flex-direction: column;
+  .notiBox {
+   height: auto;
+    width: 100%;
+   display: flex;
+    padding-left: 5px;
+     padding-right: 5px;
+    color: white;
+     padding-top: 10px;
+     padding-bottom: 10px;
+    img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+
+      padding-right: 10px;
+    }
+    p {
+    text-decoration: none;
+    }
+  }
+  .isNotSeenNotiBox {
+   height: auto;
+    color: white;
+    background: grey;
+    width: 100%;
+   display: flex;
+    padding-left: 5px;
+     padding-right: 5px;
+     padding-top: 10px;
+     padding-bottom: 10px;
+    img {
+      width: 60px;
+      height: 60px;
+
+      padding-right: 10px;
+      border-radius: 50%;
+    }
+    p {
+      text-decoration: none;
+      }
+  }
+}

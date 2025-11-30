@@ -26,9 +26,8 @@ export default function MusicDetail() {
     refetchInterval: 4000
   })
   const { data : singer} = useQuery({
-   queryKey: ["singer"],
-   queryFn: () => {
-     return axios.get(`${import.meta.env.VITE_BACKEND}music/singer/${data?.data?.singerId}`)}
+   queryKey: ["singerMuS"],
+   queryFn: () => axios.get(`${import.meta.env.VITE_BACKEND}music/user-music/${data?.data?.singerId._id}`)
   })
   const fetchData = () => {
       return axios.get(`${import.meta.env.VITE_BACKEND}music/dexuat`)

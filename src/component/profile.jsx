@@ -194,6 +194,10 @@ function Setting({setting, dispatch,id, navigate, set, role}) {
              <Link to="/singerPanel" className="dropdownitem10"   >
                          <p  className="link10" >Danh sách nhạc/album</p>
              </Link> : null          }
+           {role === "admin" ? 
+              <Link to="/adminPanel" className="dropdownitem10"   >
+                          <p  className="link10" >Trang Admin</p>
+              </Link> : null          }
          </div>
 
   )

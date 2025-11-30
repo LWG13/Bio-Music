@@ -24,9 +24,6 @@ export default function Account() {
       Đổi mật khẩu
         </li>
       </Link>
-        <li className="accountBox" >
-          Trở thành ca sĩ?
-          </li>
         <li className="accountBox" onClick={() => dispatch(logOutUser())}>
           Đăng xuất
           </li>

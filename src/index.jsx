@@ -15,13 +15,18 @@ import { Provider, useDispatch} from "react-redux"
 import { configureStore } from "@reduxjs/toolkit"
 import authReducer from "./component/ReduxToolkit/authSlice.js"
 import CreateMusic from "./component/createMusic.jsx"
+import EditMusicOrAlbum from "./component/editMusicOrAlbum.jsx"
 import musicReducer from "./component/ReduxToolkit/musicSlice.js"
 import { QueryClient, QueryClientProvider } from 'react-query'
 import MusicDetail from "./component/musicDetail.jsx"
+import AdminPanel from "./component/adminPanel.jsx"
+
 import SingerPanel from "./component/singerPanel.jsx"
 import PlaylistMobile from "./component/playlistMobile.jsx"
+import Notification from "./component/notification.jsx"
 import Account from "./component/account.jsx"
 import PlaylistDetail from "./component/playlistDetail.jsx"
+import EmailPassword from "./component/emailPassword.jsx"
 import SearchResult from "./component/searchResult.jsx"
 import AlbumDetail from "./component/albumDetail.jsx"
 const queryClient = new QueryClient()
@@ -41,6 +46,9 @@ import EditPlaylist from './component/editPlaylist.jsx';
 import PlaylistUser from "./component/playlistUser.jsx"
 import Section from "./component/section.jsx"
 import EditPassword from "./component/editPassword.jsx"
+import CategoryMusic from "./component/category.jsx"
+import CategoryList from './component/categoryList.jsx';
+import AdminRoute from './adminRoute.jsx';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -58,6 +66,10 @@ const router = createBrowserRouter([
               { path: "/", element: <HomePage /> },
               { path: "/music/:id", element: <MusicDetail /> },
               { path: "/user/:id", element: <Profile /> },
+              {
+                path: "/category/:category",
+                element: <CategoryMusic />
+              },
               { path: "/user/:id/:type", element: <PlaylistUser /> },
               { path: "/libary", element: <PlaylistMobile /> },
               { path: "/playlist/:id", element: <PlaylistDetail /> },
@@ -70,11 +82,27 @@ const router = createBrowserRouter([
       
               { path: "/singerPanel", element: <SingerPanel /> },
               { path: "/create", element: <CreateMusic /> },
+          {path: "/edit/:id/:typed", element: <EditMusicOrAlbum />}
         ]},
+              {
+                element: <AdminRoute />,
+                children: [
+
+
+                      { path: "/adminPanel", element: <AdminPanel /> },
+                ]},
               { path: "/section/:id", element: <Section /> },
               { path: "/search/result", element: <SearchResult /> },
               { path: "/account", element: <Account /> },
               { path: "/edit-password", element: <EditPassword /> },
+              {
+                path: "/notification",
+                element: <Notification />
+              },
+              {
+                path: "/category",
+                element: <CategoryList />
+              }
               
             ]
           }
@@ -84,7 +112,11 @@ const router = createBrowserRouter([
      
     ]},
     { path: "/sign-up", element: <Signup /> },
-      { path: "/login", element: <Login /> }
+      { path: "/login", element: <Login /> },
+  {
+    path: "email-password",
+    element: <EmailPassword />
+  }
 
     
 ]);
