@@ -42,7 +42,7 @@ export default function PlaylistUser() {
           <React.Fragment key={i}>
         
             {page?.data?.map(i => (
-              <Grid size={{xs: 6, sm: 6, md: 4, lg: 4}} key={i._id}>
+              <Grid size={{xs: 6, sm: 6, md: 4, lg: 3}} key={i._id}>
                 <Link to={`/playlist/${i._id}`} className="playlistBox1" id={i._id}>
               <img src={i.image} alt="music" />
               <div className="playlistContent" >
