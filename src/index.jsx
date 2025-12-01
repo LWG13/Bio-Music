@@ -26,7 +26,6 @@ import PlaylistMobile from "./component/playlistMobile.jsx"
 import Notification from "./component/notification.jsx"
 import Account from "./component/account.jsx"
 import PlaylistDetail from "./component/playlistDetail.jsx"
-import EmailPassword from "./component/emailPassword.jsx"
 import SearchResult from "./component/searchResult.jsx"
 import AlbumDetail from "./component/albumDetail.jsx"
 const queryClient = new QueryClient()
@@ -113,11 +112,7 @@ const router = createBrowserRouter([
     ]},
     { path: "/sign-up", element: <Signup /> },
       { path: "/login", element: <Login /> },
-  {
-    path: "email-password",
-    element: <EmailPassword />
-  }
-
+ 
     
 ]);
 ReactDOM.createRoot(document.getElementById('root')).render(

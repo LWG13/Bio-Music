@@ -42,8 +42,7 @@ export default function Login() {
        <span style={{color: "red"}}>{auth.loginError} </span>
       )  : null} 
       <br/>
-       <Link to="/email-password" className="Link">Quên mật khẩu?</Link>
-
+       
        <button className="btn" disabled={auth.loginStatus === "pending" ? true : false}>Login</button>
       <div className="register-link">
        <p>Don't Have An Account?<Link to="/sign-up">.  Register</Link></p>
